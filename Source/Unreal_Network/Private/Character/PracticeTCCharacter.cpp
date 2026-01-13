@@ -26,6 +26,7 @@ void APracticeTCCharacter::BeginPlay()
 	{
 		HealthWidget = Cast<UDataLineWidget>(HealthWidgetComponent->GetWidget());
 		HealthWidget->UpdateName(FText::FromString(TEXT("Health")));
+		HealthWidget->UpdateFloatValue(FMath::RoundToInt(Health));
 
 	}
 }
