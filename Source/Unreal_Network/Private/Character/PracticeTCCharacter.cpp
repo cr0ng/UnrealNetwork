@@ -15,6 +15,7 @@ APracticeTCCharacter::APracticeTCCharacter()
 
 	HealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthWidget"));
 	HealthWidgetComponent->SetupAttachment(RootComponent);
+	HealthWidgetComponent->SetWidgetSpace(EWidgetSpace::World);
 }
 
 // Called when the game starts or when spawned
@@ -25,6 +26,7 @@ void APracticeTCCharacter::BeginPlay()
 	{
 		HealthWidget = Cast<UDataLineWidget>(HealthWidgetComponent->GetWidget());
 		HealthWidget->UpdateName(FText::FromString(TEXT("Health")));
+
 	}
 }
 
@@ -33,6 +35,51 @@ void APracticeTCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// 카메라에 항상 위젯이 보이도록 (지피티용)
+	/*APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!PC) return;
+
+	FVector WorldPos = GetActorLocation() + FVector(0, 0, 100.0f);
+
+	FVector2D ScreenPos;
+	if (!PC->ProjectWorldLocationToScreen(WorldPos, ScreenPos))
+		return;
+
+	FVector CameraLocation;
+	FVector CameraDirection;
+	PC->DeprojectScreenPositionToWorld
+	(
+		ScreenPos.X,
+		ScreenPos.Y,
+		CameraLocation,
+		CameraDirection
+	);
+
+	float FixedDistance = 200.0f;
+	FVector WidgetWorldPos = CameraLocation + CameraDirection * FixedDistance;
+
+	HealthWidgetComponent->SetWorldLocation(WidgetWorldPos);
+
+	FRotator LookAtRot =
+		(CameraLocation - WidgetWorldPos).Rotation();
+	HealthWidgetComponent->SetWorldRotation(LookAtRot);*/
+
+	// 카메라에 항상 위젯 보이도록(선생님)
+	if (HealthWidgetComponent)
+	{
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
+		if (PC && PC->PlayerCameraManager)
+		{
+			// 회전 -> 벡터 만들기 가능 ( 해당 회전으로 인한 Forward 벡터를 만듦)
+			// 벡터 -> 회전 만들기 가능
+
+			FVector CameraForward = PC->PlayerCameraManager->GetCameraRotation().Vector(); // 카메라의 Forward 벡터
+			FVector WidgetForward = CameraForward * -1.0f;
+
+			HealthWidgetComponent->SetWorldRotation(WidgetForward.Rotation());
+			
+		}
+	}
 }
 
 // Called to bind functionality to input
