@@ -26,7 +26,7 @@ public:
 protected:
 	// 리턴타입은 무조건 void, 커넥션이 있어야 서버로 전달이 된다. 
 	// 파라미터 타입은 대체로 가능(TSet, TMap 불가능)
-	// 함수 구현은 뒤에 _Implemantation이 붙어야 하낟.
+	// 함수 구현은 뒤에 _Implemantation이 붙어야 한다.
 	UFUNCTION(Server, Reliable) // Server : 서버 RPC, Realiable : 무조건 실행(수신 확인시까지 요청 반복)
 	// 이름 앞에 붙이는 거 필수는 아님, 하지만 알아보기 좋음
 	void Server_Fire(); 
@@ -45,4 +45,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TestRPC")
 	TSubclassOf<AActor> ProjectileClass = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "TestRPC")
+	TSubclassOf<class UCameraShakeBase> CameraShakeClass = nullptr;
 };

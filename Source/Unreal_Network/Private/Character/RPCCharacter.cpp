@@ -12,6 +12,7 @@ ARPCCharacter::ARPCCharacter()
 	FireLocation = CreateDefaultSubobject<USceneComponent>(TEXT("FireLocation"));
 	FireLocation->SetupAttachment(GetMesh(), TEXT("Fire"));
 }
+
 // Called when the game starts or when spawned
 void ARPCCharacter::BeginPlay()
 {
@@ -43,7 +44,7 @@ void ARPCCharacter::Fire()
 
 void ARPCCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
 	Client_OnHit();	// ClientRPC로 호출
 	//Client_OnHit_Implementation();	// 그냥 호출해서 로컬 실행
 }
@@ -67,5 +68,9 @@ void ARPCCharacter::Server_Fire_Implementation()
 
 void ARPCCharacter::Client_OnHit_Implementation()
 {
+	
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("내가 맞았음"));
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	PC->ClientStartCameraShake(CameraShakeClass);
 }
