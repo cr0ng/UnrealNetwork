@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+
 // Sets default values
 APoisonTrap::APoisonTrap()
 {

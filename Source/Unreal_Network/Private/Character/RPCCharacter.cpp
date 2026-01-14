@@ -57,13 +57,19 @@ void ARPCCharacter::OnTakeDamage(AActor* DamagedActor, float Damage, const UDama
 	if (HasAuthority())
 	{
 		Health -= Damage;
-
+		if (Health >= MaxHealth)
+		{
+			Health = MaxHealth;
+		}
 		if (IsLocallyControlled())
 		{
 			OnRef_Health();	// 서버는 리플리케이션이 없으므로 수동으로 UI 같은 것들 갱신
 		}
 		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("맞았음"));
-		Client_OnHit();	// ClientRPC로 호출
+
+		if (Damage > 0) { // 힐할때는 카메라 안 흔들리게
+			Client_OnHit();	// ClientRPC로 호출
+		}
 		//Client_OnHit_Implementation();	// 그냥 호출해서 로컬 실행
 	}
 }

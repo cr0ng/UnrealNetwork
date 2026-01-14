@@ -58,4 +58,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRef_Health)
 	float Health = 100.0f;
+
+	UPROPERTY(VisibleAnywhere)
+	float MaxHealth = 100.0f;
+
 };
